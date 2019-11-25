@@ -17,6 +17,7 @@ struct HeadlinesData: Codable {
 struct NewsHeadline: Codable {
     let title: String
     let abstract: String
+    let byline: String 
 }
 
 extension HeadlinesData {
@@ -37,7 +38,7 @@ extension HeadlinesData {
             let headlinesData = try JSONDecoder().decode(HeadlinesData.self, from: data)
             headlines = headlinesData.results
         } catch {
-            print("Failed to load contents")
+            print("Failed to load contents \(error)")
         }
         
         
