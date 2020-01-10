@@ -17,8 +17,25 @@ struct HeadlinesData: Codable {
 struct NewsHeadline: Codable {
     let title: String
     let abstract: String
-    let byline: String 
+    let byline: String
+    let multimedia: [Multimedia]
 }
+
+struct Multimedia: Codable {
+    let url: String
+    let caption: String
+    let format: String // "thumbLarge" "superJumbo"
+}
+    
+ extension NewsHeadline {
+    var thumbImage: Multimedia? {
+        return multimedia.filter { $0.format == "thumbLarge"}.first // 150 x 150
+    }
+    var superJumbo : Multimedia? {
+        return multimedia.filter { $0.format == "superJumbo"}.first // 1080 x 2080
+    }
+}
+
 
 extension HeadlinesData {
     // parse the "topStoriesTechnology.json" into array of [NewsHeadline] objects

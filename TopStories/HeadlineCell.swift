@@ -20,13 +20,35 @@ class HeadlineCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         headlineImageView.layer.cornerRadius = 4
     }
     
     func configured(for headline: NewsHeadline) {
         headlineTitleLabel.text = headline.title
         bylineLabel.text = headline.byline
+        
+        // lets get image
+        
+        if let thumbImage = headline.thumbImage {
+            // TODO: memory management - we need to handle retains cycles here
+            // we can archive this by using a capture list
+            // eg [unownd self] ... more on this later... more on this later
+            ImageClient.fetchImage(for: thumbImage.url) { (result) in
+                switch result {
+                case .success(let image):
+                    // update any UI elements on the main thread
+                    DispatchQueue.main.async {
+                        self.headlineImageView.image = image
+                    }
+                
+                case .failure(let error):
+                    print("configuredCell image error - \(error)")
+                }
+                
+                
+                
+            }
+        }
     }
 
    
